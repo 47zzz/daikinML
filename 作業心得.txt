@@ -1,0 +1,17 @@
+最終成績：64%
+
+方法：
+1.在本地端training(3060Ti)
+2.網路架構與助教code一模一樣並無更改，因為認為data數量相對較少，不希望增加更多參數導致太容易overfitting。
+3.data hint 觀察data作旋轉、縮放、裁切、等調整前後差異，確定以人眼的方式仍可辨別出物體後，選擇該參數
+4.semi-supervisor 一開始先將模型train到acc~0.5附近後，開始施作semi-supervisor，觀察各unlabeled圖片與分類結果調整threshold(實際做法為:遞減地從threshold = 0.65往上看取出所有符合標準的圖片是否有大量被標記錯誤之圖片、最後調得 threshold = 0.935)
+5.總共約跑了250(supervised)+300(Semi_supervised)個epochs
+
+待改善：
+1.Worker_Num(?
+2.semi-supervisor實作，由於第一次接觸訓練模型相關函式庫，不熟悉如何將 Unlabled 圖片標記 labeled 和 ConcatDataset 的施作，故在施作面將batchsize設為1(sample一個一個標記)，導致此程式碼在這方面上平行化處理得很差，訓練效率低下。
+3.semi-supervisor到後面反覆的自我標籤並訓練在無監督的情況下導致原本錯誤的照片到最後完全被認定為某標籤反覆訓練最後效果不彰。
+
+施作中心得：
+由於把 code 從 colab 移到本地端施作，有一些不相容的參數需要重新研究、且許多pytorch、tensor等使用方法都需要熟悉，在網上查了不少相關資料，算是初次踏入訓練的必經之路。
+不過在最後semi-supervisor我認為在實作上仍需更加謹慎、適時地檢查機器是否進入錯誤的自我回圈內。
