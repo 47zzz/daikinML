@@ -3,7 +3,7 @@
 方法：
 1.在本地端training(3060Ti)
 2.網路架構與助教code一模一樣並無更改，因為認為data數量相對較少，不希望增加更多參數導致太容易overfitting。
-3.data hint 觀察data作旋轉、縮放、裁切、等調整前後差異，確定以人眼的方式仍可辨別出物體後，選擇該參數
+3.data hint 觀察data作旋轉、縮放、裁切、HSV等調整前後差異，確定以人眼的方式仍可辨別出物體後，選擇該參數
 4.semi-supervisor 一開始先將模型train到acc~0.5附近後，開始施作semi-supervisor，觀察各unlabeled圖片與分類結果調整threshold(實際做法為:遞減地從threshold = 0.65往上看取出所有符合標準的圖片是否有大量被標記錯誤之圖片、最後調得 threshold = 0.935)
 5.總共約跑了250(supervised)+300(Semi_supervised)個epochs
 
